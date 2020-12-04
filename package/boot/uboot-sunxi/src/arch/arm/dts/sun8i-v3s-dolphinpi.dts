@@ -49,14 +49,15 @@
 	compatible = "dolphinpi", "allwinner,sun8i-v3s";
 
 	aliases {
-		serial2 = &uart2;
+		serial0 = &uart0;
 		spi0 = &spi0;
 		ethernet0 = &emac;
 	};
 
 	chosen {
-		stdout-path = "serial2:115200n8";
+		stdout-path = "serial0:115200n8";
 	};
+
 
 	soc {
 		syscon: syscon@1c00000 {
@@ -133,7 +134,7 @@
 				compatible = "spi-nand";
 				reg = <0>;
 				/* The layout on the DolphinPi is very good, 100mhz are possible! */
-				spi-max-frequency = <100000000>;
+				spi-max-frequency = <40000000>;
 
 				boot@0 {
 					label = "boot";
@@ -157,8 +158,16 @@
 	status = "okay";
 };
 
+/*
 &uart2 {
 	pinctrl-0 = <&uart2_pins_a>;
+	pinctrl-names = "default";
+	status = "okay";
+};
+*/
+
+&uart0 {
+	pinctrl-0 = <&uart0_pins_a>;
 	pinctrl-names = "default";
 	status = "okay";
 };
@@ -174,12 +183,19 @@
 };
 
 &pio {
-	
+/*
+	uart0_pins_a: uart0@0 {
+		pins = "PB8", "PB9";
+		function = "uart0";
+		bias-pull-up;
+	};
+
 	uart2_pins_a: uart2@2 {
 		pins = "PB0", "PB1";
 		function = "uart2";
 		bias-pull-up;
 	};
+*/
 
 	spi0_pins: spi0-pins {
 		pins = "PC0", "PC1", "PC2", "PC3";

@@ -12,7 +12,7 @@ diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
 index ffdf09f29e..723074e8a5 100644
 --- a/arch/arm/mach-sunxi/Kconfig
 +++ b/arch/arm/mach-sunxi/Kconfig
-@@ -989,13 +989,58 @@ config SPL_STACK_R_ADDR
+@@ -989,13 +989,60 @@ config SPL_STACK_R_ADDR
  	default 0x4fe00000 if MACH_SUN50I_H6
  
  config SPL_SPI_SUNXI
@@ -20,6 +20,7 @@ index ffdf09f29e..723074e8a5 100644
 -	depends on MACH_SUN4I || MACH_SUN5I || MACH_SUN7I || MACH_SUNXI_H3_H5 || MACH_SUN50I
 +	bool "Support for SPI (NOR) Flash on Allwinner SoCs in SPL"
 +	depends on MACH_SUN4I || MACH_SUN5I || MACH_SUN7I || MACH_SUNXI_H3_H5 || MACH_SUN50I || MACH_SUN8I_V3S
++	default n
  	help
 -	  Enable support for SPI Flash. This option allows SPL to read from
 -	  sunxi SPI Flash. It uses the same method as the boot ROM, so does
@@ -33,12 +34,13 @@ index ffdf09f29e..723074e8a5 100644
 +	select SPL_SPINAND_SUNXI_SPL_SIZE
 +	select SPL_SPINAND_SUNXI_UBOOT_PADDING
 +	select SPL_SPINAND_SUNXI_PAGESIZE
++	default y
 +	help
 +	  Enable support for SPI-NAND Flash. This option allows SPL to read from
 +	  sunxi SPI-NAND Flash. It needs further configuration to calculate all offsets correctly.
 +
 +config SPL_SPINAND_SUNXI_SPL_SIZE
-+	int "Expected SPL size after padding to blocksize"
++	hex "Expected SPL size after padding to blocksize"
 +	depends on SPL_SPINAND_SUNXI
 +	default 0x6000
 +	help
@@ -48,7 +50,7 @@ index ffdf09f29e..723074e8a5 100644
 +	  spi-nand.
 +
 +config SPL_SPINAND_SUNXI_UBOOT_PADDING
-+	int "Offset between SPL and u-boot"
++	hex "Offset between SPL and u-boot"
 +	depends on SPL_SPINAND_SUNXI
 +	default 0x2000
 +	help
@@ -83,7 +85,7 @@ index d129f33479..490901251c 100644
  obj-$(CONFIG_DRAM_SUN8I_A83T)	+= dram_sun8i_a83t.o
  obj-$(CONFIG_DRAM_SUN9I)	+= dram_sun9i.o
  obj-$(CONFIG_SPL_SPI_SUNXI)	+= spl_spi_sunxi.o
-+obj-$(CONFIG_SPL_SPINAND_SUNXI)	+= spl_spinand_sunxi.o
++obj-y	+= spl_spinand_sunxi.o
  obj-$(CONFIG_SUNXI_DRAM_DW)	+= dram_sunxi_dw.o
  obj-$(CONFIG_SUNXI_DRAM_DW)	+= dram_timings/
  obj-$(CONFIG_DRAM_SUN50I_H6)	+= dram_sun50i_h6.o

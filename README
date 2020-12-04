@@ -1,3 +1,50 @@
+spi-NAND flash support for these boards:
+
+https://github.com/bhgv/Blueberry-PI_Allwinner-V3s_LVDS_AXP203
+
+
+how-to:
+Make bootable SD first:
+
+cp sdwithspinandaccess.config .config
+make menuconfig
+# exit with save of changes
+make j4
+
+after:
+
+cp spinand.config .config
+make menuconfig
+# exit with save of changes
+make j4
+
+next:
+
+flash SD card:
+
+bin/targets/sunxi/cortexa7/openwrt-snapshot-*-sunxi-cortexa7-sun8i-v3s-licheepi-zero-ext4-sdcard.img.gz
+
+on just flashed SD:
+
+cd /root
+sudo chmod 777 .
+
+next copy to here
+
+bin/targets/sunxi/cortexa7v3sspinand/*.img.gz
+
+next boot your Allwinner-v3s board from this flashed SD card
+open a terminal to control it and there:
+
+cd /root
+mtd erase /dev/mtd0
+gunzip -ck *.img.gz | mtd write - /dev/mtd0
+
+if all done well reboot your v3s board without SD
+
+
+---------------------------------------------------------
+
   _______                     ________        __
  |       |.-----.-----.-----.|  |  |  |.----.|  |_
  |   -   ||  _  |  -__|     ||  |  |  ||   _||   _|
